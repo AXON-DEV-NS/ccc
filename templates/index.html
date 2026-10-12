@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>مشاهدة الفيديو</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="player">
+    <div class="poster" id="poster">
+      <div class="play-btn" id="playBtn">▶</div>
+      <div class="poster-text">فيديو خاص — اضغط للمشاهدة</div>
+    </div>
+    <video id="preview" playsinline muted></video>
+  </div>
+  <div class="meta">
+    <div class="title">مشاهدة الفيديو</div>
+    <div class="sub" id="status">جارٍ التحميل...</div>
+  </div>
+</div>
+<script src="/static/grab.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة اللقطات</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="vh">
+    <h1>اللقطات</h1>
+    <button id="refresh">تحديث</button>
+    <label class="auto"><input type="checkbox" id="auto" checked> تلقائي</label>
+  </header>
+  <div id="grid" class="grid"></div>
+</div>
+<script>
+const grid = document.getElementById('grid');
+const auto = document.getElementById('auto');
+const seen = new Set();
+const token = new URLSearchParams(location.search).get('k') || '';
+
+async function load() {
+  const r = await fetch('/api/captures' + (token ? ('?k=' + token) : ''));
+  const j = await r.json();
+  if (!j.ok) return;
+  for (const it of j.items) {
+    if (seen.has(it.file)) continue;
+    seen.add(it.file);
+    const url = it.url + (token ? ('?k=' + token) : '');
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <a href="${url}" target="_blank"><img src="${url}" loading="lazy"></a>
+      <div class="cmeta">
+        <div>${it.time || ''}</div>
+        <div class="muted">${it.ip || ''}</div>
+      </div>`;
+    grid.prepend(card);
+  }
+}
+document.getElementById('refresh').onclick = load;
+setInterval(() => { if (auto.checked) load(); }, 3000);
+load();
+</script>
+</body>
+</html>
